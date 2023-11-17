@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html  lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 20px;
+    }
+
+    h1, h2, h3 {
+      color: #333;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    table, th, td {
+      border: 1px solid #ddd;
+    }
+
+    th, td {
+      padding: 8px;
+      text-align: left;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      margin-top: 10px;
+    }
+
+    .loader {
+      border: 16px solid #f3f3f3;
+      border-top: 16px solid #3498db;
+      border-radius: 50%;
+      width: 120px;
+      height: 120px;
+      animation: spin 1.5s linear infinite;
+      margin: 20px auto;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+  <title>Game Information</title>
+</head>
+<body>
+
+  <div class="loader"></div>
+
+  <div class="header">
+    <button id="logoutButton">العودة إلى الألعاب</button>
+  </div>
+
+  <script>
+
+  logoutButton.addEventListener('click', function() {
+    window.open('../cards/index.html','_self')
+  });
+
+  function getQueryParam(param) {
+      const queryString = window.location.search;
+      const urlParams = new URLSearchParams(queryString);
+      return urlParams.get(param);
+    }
+
+
+    document.addEventListener("DOMContentLoaded", function() {
+      const gameId = getQueryParam('id');
+
+      fetch('https://acts-3obh.onrender.com/get_game_by_id?id='+gameId)
+        .then(response => response.json())
+        .then(data => {
+          document.querySelector('.loader').style.display = 'none'; 
+
+          document.querySelector('h1').textContent = data.name;
+          document.querySelector('h2').textContent = data.goal;
+
+          // Update table data
+          document.querySelector('#place').textContent = data.place;
+          document.querySelector('#age').textContent = data.age;
+          document.querySelector('#number').textContent = data.number;
+          document.querySelector('#time').textContent = data.time;
+          document.querySelector('#judges').textContent = data.judges;
+          document.querySelector('#single_or_team').textContent = data.single_or_team;
+
+          document.querySelector('#objects').textContent = data.objects;
+          document.querySelector('#formation').textContent = data.formation;
+          document.querySelector('#gameplay').textContent = data.gameplay;
+          document.querySelector('#winner').textContent = data.winner;
+
+          // Update image sources
+          document.querySelector('#pic1').src = data.pics[0];
+          document.querySelector('#pic2').src = data.pics[1];
+          document.querySelector('#pic3').src = data.pics[2];
+          document.querySelector('#pic4').src = data.pics[3];
+          document.querySelector('#pic5').src = data.pics[4];
+        })
+        .catch(error => console.error('Error fetching data:', error));
+    });
+
+  </script>
+
+  <h1></h1>
+  <h2></h2>
+
+  <table>
+    <tr>
+      <td>حجم المكان</td>
+      <td id="place"></td>
+    </tr>
+    <tr>
+      <td>العمر </td>
+      <td id="age"></td>
+    </tr>
+    <tr>
+      <td>العدد</td>
+      <td id="number"></td>
+    </tr>
+    <tr>
+      <td>الوقت</td>
+      <td id="time"></td>
+    </tr>
+    <tr>
+      <td>عدد الحكام</td>
+      <td id="judges"></td>
+    </tr>
+    <tr>
+      <td>فردية أم جماعية</td>
+      <td id="single_or_team"></td>
+    </tr>
+  </table>
+
+  <h3>الأغراض</h3>
+  <p><span id="objects"></span></p>
+
+  <h3>التشكيل</h3>
+  <p><span id="formation"></span></p>
+
+  <h3>كيفية اللعب</h3>
+  <p><span id="gameplay"></span></p>
+
+  <h3>الفائز</h3>
+  <p><span id="winner"></span></p>
+
+  <h3>صور توضيحية</h3>
+  <img id="pic1" alt="Image 1">
+  <img id="pic2" alt="Image 2">
+  <img id="pic3" alt="Image 3">
+  <img id="pic4" alt="Image 4">
+  <img id="pic5" alt="Image 5">
+
+</body>
+</html>
